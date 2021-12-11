@@ -8,28 +8,32 @@
 
             <nav class="nav">
                 {% if order_cost %}
-                <form method="post" action="/payments/">
+                <form method="post" action="/payment/">
                     {% csrf_token %}
-                    <a class="nav__link" href="" onclick="sendPostRequest(this, {{ order_cost }})">Оплатить ({{ order_cost }} руб.)</a>
+                    <input type="text" name="order_id" value="{{ secret_uuid }}" hidden>
+                    <input type="text" name="info" value="Оплата заказа" hidden>
+                    <input type="text" name="cost" value="{{ order_cost }}" hidden>
+                    <button class="nav__link" type="submit">Оплатить ({{ order_cost }} руб.)</button>
                     <a class="nav__link" href="">Корзина</a>
                 </form>
                 {% endif %}
-                 <script>
-                     function sendPostRequest{{ lesson.pk }}(element, value) {
-                         let link = "{% url 'payment' %}";
-                         $.ajax({
-                             type: 'POST',
-                             url: link,
-                             data: {
-                                 value: value,
-                                 secret_uuid: {{ secret_uuid }},
-                                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                             },
-                             success: function () {
-                             }
-                         });
-                     }
-                 </script>
+{#                 <script>#}
+{#                     function sendPostRequest(element, value) {#}
+{#                         let link = "{% url 'payment' %}";#}
+{#                         $.ajax({#}
+{#                             type: 'POST',#}
+{#                             url: link,#}
+{#                             data: {#}
+{#                                 cost: value,#}
+{#                                 info: 'Оплата заказа',#}
+{#                                 order_id: '{{ secret_uuid }}',#}
+{#                                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()#}
+{#                             },#}
+{#                             success: function () {#}
+{#                             }#}
+{#                         });#}
+{#                     }#}
+{#                 </script>#}
             </nav>
         </div><!-- /.header__inner -->
     </div><!-- /.container -->
