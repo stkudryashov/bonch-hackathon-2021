@@ -33,6 +33,9 @@ class Settings(models.Model):
     account_id = models.CharField(max_length=64)
     secret_key = models.CharField(max_length=64)
 
+    vk_token = models.CharField(max_length=256)
+    telegram_token = models.CharField(max_length=256)
+
     def __str__(self):
         return f'{self.account_id}'
 
