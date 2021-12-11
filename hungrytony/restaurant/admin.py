@@ -9,7 +9,7 @@ class TableAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Информация', {
-            'fields': ('capacity', 'is_free', 'user_id')
+            'fields': ('capacity', 'is_free')
         }),
         ('Ссылка', {
             'fields': ('url',)
