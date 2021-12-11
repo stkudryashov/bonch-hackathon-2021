@@ -34,12 +34,12 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'table_id')
-    list_display_links = ('id', 'table_id')
+    list_display = ('id', 'table_id', 'order_id')
+    list_display_links = ('id', 'table_id', 'order_id')
 
     fieldsets = (
         ('Информация', {
-            'fields': ('table_id',)
+            'fields': ('table_id', 'order_id')
         }),
         ('Заказ', {
             'fields': ('products',)

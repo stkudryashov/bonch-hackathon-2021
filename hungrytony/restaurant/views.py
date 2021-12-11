@@ -10,7 +10,8 @@ def index_view(request):
     tables = Table.objects.all()
 
     args = {
-        'tables': tables
+        'tables': tables,
+        'order_cost': 0
     }
 
     return render(request, 'restaurant/content.html', args)

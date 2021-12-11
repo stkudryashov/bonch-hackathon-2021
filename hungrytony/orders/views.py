@@ -15,7 +15,7 @@ def index_view(request, secret_uuid):
     args = {
         'categories': products,
         'secret_uuid': secret_uuid,
-        'order_cost': order_cost
+        'order_cost': round(order_cost, 2)
     }
 
     return render(request, 'orders/content.html', args)
