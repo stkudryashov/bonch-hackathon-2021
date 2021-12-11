@@ -1,25 +1,16 @@
 {% load static %}
-<!-- Header -->
 <header class="header" id="header">
     <div class="container">
         <div class="header__inner">
             <div class="header__logo">
-                <img src="images/logo.png" alt="">
+                <img src="{% static 'img/logo.png' %}" alt="">
             </div>
 
             <nav class="nav">
-                <a class="nav__link" href="#">1</a>
-                <a class="nav__link" href="#">2</a>
+                <a class="nav__link" href="#">Кнопка 1</a>
+                <a class="nav__link" href="#">Кнопка 2</a>
+                <a class="nav__link" href="#">Кнопка 3</a>
             </nav>
-
-            <button class="burger" type="button" id="burger">
-                <span class="burger__item">Меню</span>
-            </button>
         </div><!-- /.header__inner -->
-
-        <nav class="header__nav" id="menu">
-                <a class="nav__link" href="#">1</a>
-                <a class="nav__link" href="#">2</a>
-        </nav>
     </div><!-- /.container -->
 </header>

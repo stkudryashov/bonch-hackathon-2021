@@ -20,13 +20,13 @@
 </head>
 <body>
     <!-- Header -->
-    {% block navbar %}
-        {% include 'inclusions/header.html' %}
-    {% endblock %}
+    {% include 'inclusions/header.html' %}
 
     <!-- Page Content -->
     <div class="container">
+        {% block content %}
 
+        {% endblock %}
     </div>
 </body>
 </html>

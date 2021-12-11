@@ -4,12 +4,12 @@ from restaurant.models import *
 
 @admin.register(Table)
 class TableAdmin(admin.ModelAdmin):
-    list_display = ('id', 'capacity', 'is_free', 'url')
+    list_display = ('id', 'number', 'capacity', 'is_free', 'url')
     list_display_links = ('id',)
 
     fieldsets = (
         ('Информация', {
-            'fields': ('capacity', 'is_free')
+            'fields': ('number', 'capacity', 'is_free')
         }),
         ('Ссылка', {
             'fields': ('url',)

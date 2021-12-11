@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Table List -->
+    <div class="content">
+    {% for table in tables %}
+        <article class="card">
+            <div class="card__header">
+                <img class="card__photo" src="{{ table.tableinfo.photo.url }}" alt="">
+            </div>
+            <div class="card__content">
+                <div class="card__title">
+                    <h1>{{ table.tableinfo.name }} №{{ table.number }}</h1>
+                </div>
+                <div class="card__text">
+                    <p>{{ table.tableinfo.info }}</p>
+                </div>
+                {% if table.is_free %}
+                <div class="card__button">
+                    <a href="">Забронировать</a>
+                </div>
+                {% else %}
+                <div class="card__button">
+                    <a href="">Занят</a>
+                </div>
+                {% endif %}
+            </div>
+        </article>
+    {% endfor %}
+    </div>
+{% endblock %}
