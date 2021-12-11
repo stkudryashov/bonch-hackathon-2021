@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'employee.apps.EmployeeConfig',
     'restaurant.apps.RestaurantConfig',
     'orders.apps.OrdersConfig',
+    'vkbot.apps.VkbotConfig'
 ]
 
 MIDDLEWARE = [

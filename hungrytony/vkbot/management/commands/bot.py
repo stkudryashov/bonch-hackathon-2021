@@ -9,9 +9,13 @@ from vkbot.management.bot_settings import longpoll
 
 import json
 
+from restaurant.models import Table
+
 
 def main():
     print("VkBot loaded")
+    tables = Table.objects.all()
+    print(repr(tables))
     for event in longpoll.listen():
         if event.type == VkBotEventType.MESSAGE_NEW:
             resolve_commands(event)
@@ -29,6 +33,8 @@ def resolve_commands(event):
         command = payload.get("command")
     else:
         command = msg_text.lower()
+
+
 
     # Possible commands
     if command == cmd.MENU:
