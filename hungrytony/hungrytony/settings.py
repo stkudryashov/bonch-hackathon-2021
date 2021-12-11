@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'employee.apps.EmployeeConfig',
     'restaurant.apps.RestaurantConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 MIDDLEWARE = [
