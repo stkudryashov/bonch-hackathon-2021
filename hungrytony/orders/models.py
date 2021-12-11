@@ -36,7 +36,8 @@ class Product(models.Model):
 
 class Order(models.Model):
     table_id = models.ForeignKey(Table, on_delete=models.PROTECT)
-    products = models.ManyToManyField(Product, related_name='orders')
+    order_id = models.CharField(max_length=64, verbose_name='идентификатор заказа')
+    products = models.ManyToManyField(Product, related_name='orders', blank=True, null=True)
 
     def __str__(self):
         return f'{self.id}-{self.table_id.number}'

@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
+
 from restaurant.models import *
+from orders.models import Order
+
+import uuid
 
 
 def index_view(request):
@@ -20,6 +24,12 @@ def reserve_table(request):
     table = Table.objects.get(id=table_id)
 
     table.is_free = False
+
+    secret_uuid = uuid.uuid4()
+
+    table.url = secret_uuid
     table.save()
 
-    return redirect('/order/')
+    Order.objects.create(table_id=table, order_id=secret_uuid)
+
+    return redirect(f'/order/{secret_uuid}/')

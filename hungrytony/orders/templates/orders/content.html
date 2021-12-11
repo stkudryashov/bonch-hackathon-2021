@@ -17,6 +17,12 @@
                     <div class="card__text">
                         <p>{{ product.info }}</p>
                     </div>
+                    <form method="post" action="/order/add/{{ secret_uuid }}/">
+                        {% csrf_token %}
+                        <div class="card__button">
+                            <button type="submit" value="{{ product.id }}" name="product_id">В корзину</button>
+                        </div>
+                    </form>
                 </div>
             </article>
         {% endfor %}

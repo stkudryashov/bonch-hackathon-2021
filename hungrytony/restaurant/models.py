@@ -5,7 +5,7 @@ class Table(models.Model):
     number = models.CharField(max_length=32, verbose_name='номер столика')
     capacity = models.PositiveIntegerField(verbose_name='вместимость')
     is_free = models.BooleanField(default=True, verbose_name='свободен')
-    url = models.CharField(max_length=64, verbose_name='ссылка')
+    url = models.CharField(max_length=64, verbose_name='ссылка', blank=True, null=True)
 
     def __str__(self):
         return f'Столик №{self.number}'

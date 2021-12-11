@@ -2,10 +2,15 @@ from django.contrib import admin
 from restaurant.models import *
 
 
+class TableInfoInLine(admin.TabularInline):
+    model = TableInfo
+
+
 @admin.register(Table)
 class TableAdmin(admin.ModelAdmin):
     list_display = ('id', 'number', 'capacity', 'is_free', 'url')
     list_display_links = ('id',)
+    list_editable = ('is_free',)
 
     fieldsets = (
         ('Информация', {
@@ -15,6 +20,10 @@ class TableAdmin(admin.ModelAdmin):
             'fields': ('url',)
         })
     )
+
+    inlines = [
+        TableInfoInLine
+    ]
 
 
 @admin.register(TableInfo)
