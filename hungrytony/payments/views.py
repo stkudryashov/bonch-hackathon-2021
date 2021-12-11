@@ -5,7 +5,7 @@ from yookassa import Configuration
 from yookassa import Payment
 
 
-def create_payment(order_id, table_id, cost, info)
+def create_payment(order_id, table_id, cost, info):
     shop_settings = ShopSettings.objects.last()
 
     Configuration.account_id = shop_settings.account_id
