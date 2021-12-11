@@ -27,3 +27,15 @@ class TableInfo(models.Model):
     class Meta:
         verbose_name = 'информация о столике'
         verbose_name_plural = 'информация о столиках'
+
+
+class Settings(models.Model):
+    account_id = models.CharField(max_length=64)
+    secret_key = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f'{self.account_id}'
+
+    class Meta:
+        verbose_name = 'настройки'
+        verbose_name_plural = 'настройки'

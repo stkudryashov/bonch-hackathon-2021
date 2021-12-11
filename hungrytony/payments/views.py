@@ -1,15 +1,15 @@
 from payments.models import Payment as ModelPayment
-from payments.models import ShopSettings
+from restaurant.models import Settings
 
 from yookassa import Configuration
 from yookassa import Payment
 
 
 def create_payment(order_id, table_id, cost, info):
-    shop_settings = ShopSettings.objects.last()
+    settings = Settings.objects.last()
 
-    Configuration.account_id = shop_settings.account_id
-    Configuration.secret_key = shop_settings.secret_key
+    Configuration.account_id = settings.account_id
+    Configuration.secret_key = settings.secret_key
 
     payment = Payment.create(
         {

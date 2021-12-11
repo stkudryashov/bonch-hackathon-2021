@@ -39,3 +39,9 @@ class TableInfoAdmin(admin.ModelAdmin):
             'fields': ('photo',)
         })
     )
+
+
+@admin.register(Settings)
+class ShopAdmin(admin.ModelAdmin):
+    list_display = ('account_id', 'secret_key')
+    list_display_links = ('account_id', 'secret_key')

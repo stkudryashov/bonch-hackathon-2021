@@ -18,9 +18,3 @@ class PaymentAdmin(admin.ModelAdmin):
             'fields': ('info', 'is_closed')
         })
     )
-
-
-@admin.register(ShopSettings)
-class ShopAdmin(admin.ModelAdmin):
-    list_display = ('account_id', 'secret_key')
-    list_display_links = ('account_id', 'secret_key')

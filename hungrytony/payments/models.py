@@ -21,15 +21,3 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'платеж'
         verbose_name_plural = 'список платежей'
-
-
-class ShopSettings(models.Model):
-    account_id = models.CharField(max_length=64)
-    secret_key = models.CharField(max_length=64)
-
-    def __str__(self):
-        return f'{self.account_id}'
-
-    class Meta:
-        verbose_name = 'настройка кассы'
-        verbose_name_plural = 'настройка кассы'
