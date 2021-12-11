@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Table List -->
+    {% for category in categories %}
+    <div>{{ category.name }}</div>
+    <div class="content">
+        {% for product in category.products.all %}
+            <article class="card">
+                <div class="card__header">
+                    <img class="card__photo" src="{{ product.photo.url }}" alt="">
+                </div>
+                <div class="card__content">
+                    <div class="card__title">
+                        <h1>{{ product.name }}</h1>
+                    </div>
+                    <div class="card__text">
+                        <p>{{ product.info }}</p>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% endblock %}

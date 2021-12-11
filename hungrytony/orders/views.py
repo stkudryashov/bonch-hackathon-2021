@@ -1,3 +1,12 @@
 from django.shortcuts import render
+from orders.models import *
 
-# Create your views here.
+
+def index_view(request):
+    products = ProductCategory.objects.all()
+
+    args = {
+        'categories': products
+    }
+
+    return render(request, 'orders/content.html', args)

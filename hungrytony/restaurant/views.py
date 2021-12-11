@@ -2,11 +2,11 @@ from django.shortcuts import render
 from restaurant.models import *
 
 
-def select_table(request):
+def index_view(request):
     tables = Table.objects.all()
 
     args = {
         'tables': tables
     }
 
-    return render(request, 'restaurant/tables.html', args)
+    return render(request, 'restaurant/content.html', args)

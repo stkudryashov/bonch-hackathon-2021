@@ -18,7 +18,13 @@ class Product(models.Model):
     info = models.TextField(verbose_name='описание блюда')
     cost = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='стоимость')
     photo = models.ImageField(upload_to='images/products/')
-    category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT, verbose_name='категория')
+
+    category = models.ForeignKey(
+        ProductCategory,
+        on_delete=models.PROTECT,
+        related_name='products',
+        verbose_name='категория'
+    )
 
     def __str__(self):
         return f'{self.name}'
@@ -30,7 +36,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     table_id = models.ForeignKey(Table, on_delete=models.PROTECT)
-    products = models.ManyToManyField(Product, related_query_name='orders')
+    products = models.ManyToManyField(Product, related_name='orders')
 
     def __str__(self):
         return f'{self.id}-{self.table_id.number}'
