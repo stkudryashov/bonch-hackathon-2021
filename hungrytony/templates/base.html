@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load static %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>{% block title %}HungryTony{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/logo.png' %}"/>
+
+    <!-- My CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    {% block navbar %}
+        {% include 'inclusions/header.html' %}
+    {% endblock %}
+
+    <!-- Page Content -->
+    <div class="container">
+
+    </div>
+</body>
+</html>
