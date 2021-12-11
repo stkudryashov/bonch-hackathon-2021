@@ -20,7 +20,7 @@ class PaymentAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Shop)
+@admin.register(ShopSettings)
 class ShopAdmin(admin.ModelAdmin):
     list_display = ('account_id', 'secret_key')
     list_display_links = ('account_id', 'secret_key')
