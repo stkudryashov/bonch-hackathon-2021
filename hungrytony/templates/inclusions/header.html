@@ -10,13 +10,13 @@
                 {% if order_cost %}
                 <form method="post" action="/payments/">
                     {% csrf_token %}
-                    <a class="nav__link" href="" onclick="sendPostRequest(this, order_cost)">Оплатить ({{ order_cost }} руб.)</a>
+                    <a class="nav__link" href="" onclick="sendPostRequest(this, {{ order_cost }})">Оплатить ({{ order_cost }} руб.)</a>
                     <a class="nav__link" href="">Корзина</a>
                 </form>
                 {% endif %}
                  <script>
                      function sendPostRequest{{ lesson.pk }}(element, value) {
-                         let link = "{% url '' %}";
+                         let link = "{% url 'payment' %}";
                          $.ajax({
                              type: 'POST',
                              url: link,
