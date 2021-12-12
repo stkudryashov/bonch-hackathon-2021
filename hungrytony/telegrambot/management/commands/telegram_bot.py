@@ -16,7 +16,7 @@ from datetime import timedelta
 import telepot
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
-from orders.models import Order
+from orders.models import Order, ProductCategory, Product, ProductOrder
 from restaurant.models import Settings, Table
 from telegrambot.models import TelegramUser
 
@@ -82,6 +82,22 @@ def edit_messages(update: Update, context: CallbackContext):
         finally:
             value = button_press.split()[1]
             create_order(user.telegram_id, value)
+    elif 'ViewCategory' in button_press:
+        try:
+            bot.deleteMessage(edit_message)
+        except telepot.exception.TelegramError:
+            pass
+        finally:
+            value = button_press.split()[1]
+            product_view(user.telegram_id, value)
+    elif 'AddProduct' in button_press:
+        try:
+            bot.deleteMessage(edit_message)
+        except telepot.exception.TelegramError:
+            pass
+        finally:
+            value = button_press.split()[1]
+            add_product_to_order(user.telegram_id, value)
 
 
 @get_or_create_profile
@@ -126,24 +142,81 @@ def table_view(telegram_id):
                       caption=message, reply_markup=keyboard)
 
 
-def create_order(telegram_id, table_id):
+def create_order(telegram_id, table_id=None, only_view=False):
+    user = TelegramUser.objects.get(telegram_id=telegram_id)
+
+    telegram_token = Settings.objects.first().telegram_token
+    bot = telepot.Bot(telegram_token)
+
+    if not only_view:
+        table = Table.objects.get(id=table_id)
+
+        table.is_free = False
+
+        secret_uuid = uuid.uuid4()
+
+        table.url = secret_uuid
+        table.save()
+
+        order = Order.objects.create(table_id=table, order_id=secret_uuid)
+
+        user.order_id = order.order_id
+        user.save()
+
+    categories = ProductCategory.objects.all()
+
+    message = 'Главное меню 🍱'
+
+    keyboard = []
+
+    for category in categories:
+        keyboard.append([InlineKeyboardButton(text=f'🥢 {category.name}', callback_data=f'ViewCategory {category.id}')])
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    bot.sendMessage(chat_id=user.telegram_id, text=message, reply_markup=keyboard)
+
+
+def product_view(telegram_id, value):
     telegram_token = Settings.objects.first().telegram_token
     bot = telepot.Bot(telegram_token)
 
     user = TelegramUser.objects.get(telegram_id=telegram_id)
+    order = Order.objects.get(order_id=user.order_id)
 
-    table = Table.objects.get(id=table_id)
+    category = ProductCategory.objects.get(id=value)
 
-    table.is_free = False
+    message = f'{category.name} 🥢'
 
-    secret_uuid = uuid.uuid4()
+    products = Product.objects.filter(category=category)
 
-    table.url = secret_uuid
-    table.save()
+    keyboard = []
 
-    order = Order.objects.create(table_id=table, order_id=secret_uuid)
+    for product in products:
+        keyboard.append([InlineKeyboardButton(text=f'🥢 {product.name}', callback_data=f'AddProduct {product.id}')])
 
-    bot.sendMessage(chat_id=user.telegram_id, text=f'{order.order_id}')
+    keyboard.append([InlineKeyboardButton(text='Назад', callback_data='dfgdfg')])
+    keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    bot.sendMessage(chat_id=user.telegram_id, text=message, reply_markup=keyboard)
+
+
+def add_product_to_order(telegram_id, value):
+    telegram_token = Settings.objects.first().telegram_token
+    bot = telepot.Bot(telegram_token)
+
+    user = TelegramUser.objects.get(telegram_id=telegram_id)
+    order = Order.objects.get(order_id=user.order_id)
+
+    product = Product.objects.get(id=value)
+
+    product_order = ProductOrder()
+    product_order.order = order
+    product_order.product = product
+    product_order.save()
+
+    bot.sendMessage(chat_id=user.telegram_id, text='Добавлено!')
+    create_order(telegram_id, only_view=True)
 
 
 class Command(BaseCommand):

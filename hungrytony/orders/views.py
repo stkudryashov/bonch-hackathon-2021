@@ -29,7 +29,6 @@ def add_product_to_order(request, secret_uuid):
     product_id = request.POST.get('product_id')
     product = Product.objects.get(id=product_id)
 
-
     product_order = ProductOrder()
     product_order.order = order
     product_order.product = product

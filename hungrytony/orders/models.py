@@ -20,7 +20,7 @@ class ProductCategory(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=64, verbose_name='название')
     info = models.TextField(verbose_name='описание блюда')
-    cost = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='стоимость')
+    cost = models.PositiveIntegerField(verbose_name='стоимость')
     photo = models.ImageField(upload_to='images/products/')
 
     category = models.ForeignKey(

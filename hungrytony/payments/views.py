@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.shortcuts import redirect, render
 
 from orders.models import Order
@@ -17,7 +18,7 @@ def create_payment(request):
 
     table_id = order.table_id
 
-    cost = request.POST.get('cost').replace(',', '.')
+    cost = order.products.all().aggregate(sum=Sum('cost')).get('sum')
     info = request.POST.get('info')
 
     settings = Settings.objects.last()
@@ -28,7 +29,7 @@ def create_payment(request):
     payment = Payment.create(
         {
             'amount': {
-                'value': '{}'.format(cost),
+                'value': '{}'.format(round(cost, 2)),
                 'currency': 'RUB'
             },
             'confirmation': {
