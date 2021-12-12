@@ -52,7 +52,7 @@ def get_button(title, payload=None):
 def carousel_tables(list_of_vk_tables):
     res = {
         "type": "carousel",
-        "elements": [get_carousel_element(x.table.name, x.table.info, '-' + x.vk_photo_id, get_button(text.KEYS_CHOOSE,
+        "elements": [get_carousel_element(x.table.name, x.table.info[:80 if len(x.table.info) > 80 else len(x.table.info)], '-' + x.vk_photo_id, get_button(text.KEYS_CHOOSE,
                                                                                                       {
                                                                                                           "command": command.CHOOSE_TABLE,
                                                                                                           "table_id": x.table.table_id.id}))
@@ -65,7 +65,7 @@ def carousel_tables(list_of_vk_tables):
 def carousel_order(list_of_vk_products):
     res = {
         "type": "carousel",
-        "elements": [get_carousel_element(x.product.name, x.product.info, '-' + x.vk_photo_id,
+        "elements": [get_carousel_element(x.product.name, x.product.info[:80 if len(x.product.info) > 80 else len(x.product.info)], '-' + x.vk_photo_id,
                                           get_button(text.KEYS_CHOOSE, {"command": command.CHOOSE_PRODUCT,
                                                                         "order_id": str(x.product.id)}))
                      for x in list_of_vk_products]

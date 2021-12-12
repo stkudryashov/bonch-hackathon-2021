@@ -32,6 +32,11 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
 
+@admin.register(ProductOrder)
+class ProductOrderAdmin(admin.ModelAdmin):
+    list_display = ("order", "product")
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'table_id', 'order_id')
@@ -41,7 +46,4 @@ class OrderAdmin(admin.ModelAdmin):
         ('Информация', {
             'fields': ('table_id', 'order_id')
         }),
-        ('Заказ', {
-            'fields': ('products',)
-        })
     )

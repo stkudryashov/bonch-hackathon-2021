@@ -26,8 +26,13 @@ def add_product_to_order(request, secret_uuid):
         return
 
     order = Order.objects.get(order_id=secret_uuid)
-    product = request.POST.get('product_id')
+    product_id = request.POST.get('product_id')
+    product = Product.objects.get(id=product_id)
 
-    order.products.add(product)
+
+    product_order = ProductOrder()
+    product_order.order = order
+    product_order.product = product
+    product_order.save()
 
     return redirect(f'/order/{secret_uuid}/')

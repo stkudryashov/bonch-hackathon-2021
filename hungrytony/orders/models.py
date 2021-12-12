@@ -41,23 +41,23 @@ class Product(models.Model):
 class Order(models.Model):
     table_id = models.ForeignKey(Table, on_delete=models.PROTECT)
     order_id = models.CharField(max_length=64, verbose_name='идентификатор заказа')
-    products = models.ManyToManyField(Product, related_name='orders')
+    products = models.ManyToManyField(Product, through="ProductOrder", related_name='orders')
 
     def __str__(self):
-        return f'{self.id}-{self.table_id.number}'
+        return f'{self.id}-{self.table_id.id}'
 
     class Meta:
         verbose_name = 'заказ'
         verbose_name_plural = 'заказы'
 
 
-# class ProductOrder(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
-#     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
-#
-#     def __str__(self):
-#         return f'{self.product}-{self.order}'
-#
-#     class Meta:
-#         verbose_name = 'продукт-заказ'
-#         verbose_name_plural = 'продукты-заказы'
+class ProductOrder(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return f'{self.product}-{self.order}'
+
+    class Meta:
+        verbose_name = 'продукт-заказ'
+        verbose_name_plural = 'продукты-заказы'
