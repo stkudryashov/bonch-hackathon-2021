@@ -5,6 +5,10 @@ from restaurant.models import Table
 class ProductCategory(models.Model):
     name = models.CharField(max_length=64, verbose_name='название')
 
+    @property
+    def get_products(self):
+        return Product.objects.filter(categories__title=self.name)
+
     def __str__(self):
         return f'{self.name}'
 
@@ -45,3 +49,15 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'заказ'
         verbose_name_plural = 'заказы'
+
+
+# class ProductOrder(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
+#     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
+#
+#     def __str__(self):
+#         return f'{self.product}-{self.order}'
+#
+#     class Meta:
+#         verbose_name = 'продукт-заказ'
+#         verbose_name_plural = 'продукты-заказы'

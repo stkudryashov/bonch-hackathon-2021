@@ -2,11 +2,11 @@ from django.db import models
 
 # Create your models here.
 from orders.models import Product, Order
-from restaurant.models import Table
+from restaurant.models import TableInfo
 
 
 class TableVk(models.Model):
-    table = models.OneToOneField(Table, on_delete=models.CASCADE, verbose_name="столик", null=False)
+    table = models.OneToOneField(TableInfo, on_delete=models.CASCADE, verbose_name="столик", null=False)
     vk_photo_id = models.TextField(verbose_name='id фотографии', blank=True, null=True)
 
     def __str__(self):

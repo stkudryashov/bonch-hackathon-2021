@@ -1,9 +1,10 @@
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 import os
+from restaurant.models import Settings
 
 # Ключи авторизации.
-token = "74d411a5559a9700d430067829639591a5b7698cbcfba6919eb7fbc328946327497827c7130981767e4ca"
+token = Settings.objects.first().vk_token
 vk_group_id = "209490298"
 
 
