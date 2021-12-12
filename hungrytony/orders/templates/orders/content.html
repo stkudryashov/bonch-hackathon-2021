@@ -8,8 +8,7 @@
                     {% csrf_token %}
                     <input type="text" name="order_id" value="{{ secret_uuid }}" hidden>
                     <input type="text" name="info" value="Оплата заказа" hidden>
-                    <button class="nav__link" type="submit">Оплатить ({{ order_cost }} руб.)</button>
-                    <a class="nav__link" href="">Корзина</a>
+                    <button class="btn btn-success" type="submit" style="margin: 10px">Оплатить ({{ order_cost }} руб.)</button>
                 </form>
                 {% endif %}
 </div>
@@ -29,39 +28,21 @@
 
             <div class = "row gap-1">
 
-             {% for product in category.products.all %}
-                <div class="card p-0" style="width: 18rem;">
-                  <img src="{{ product.photo.url }}" class="card-img-top preview" alt="">
+                {% for product in category.products.all %}
+                    <div class="card p-0" style="width: 18rem;">
+                        <img src="{{ product.photo.url }}" class="card-img-top preview" alt="">
 
-                  <div class="card-body">
-                    <h5 class="card-title fw-bold">{{ product.name }}</h5>
-                    <p class="card-text overflow-auto">{{ product.info }}</p>
-                  </div>
-                    <div class="card-footer">
-
-                      <button class="btn btn-success w-100 align-self-end" type="submit" value="{{ product.id }}" name="product_id">Добавить</button>
-
-                        <div class="input-group" id="input-group-{{product.id}}">
-
-                          <div class="input-group-prepend">
-                            <button class="btn btn-success px-3" type="button">+</button>
-                          </div>
-
-                          <input last="1" type="text" class="form-control text-center" placeholder="" aria-label="" onchange="validate(this, {{product.id}})">
-
-                            <div class="input-group-append">
-                                <button class="btn btn-danger px-3" type="button">-</button>
-                            </div>
-
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                            <p class="card-text overflow-auto">{{ product.info }}</p>
                         </div>
-
-
-
+                        <div class="card-footer">
+                            <button class="btn btn-success w-100 align-self-end" type="submit" value="{{ product.id }}"
+                                    name="product_id">Добавить
+                            </button>
+                        </div>
                     </div>
-
-                </div>
-            {% endfor %}
-
+                {% endfor %}
             </div>
         </div>
     </div>

@@ -195,7 +195,7 @@ def product_view(telegram_id, value):
     for product in products:
         keyboard.append([InlineKeyboardButton(text=f'🥢 {product.name}', callback_data=f'AddProduct {product.id}')])
 
-    keyboard.append([InlineKeyboardButton(text='Назад', callback_data='dfgdfg')])
+    keyboard.append([InlineKeyboardButton(text='Назад', callback_data='BackMenu')])
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     bot.sendMessage(chat_id=user.telegram_id, text=message, reply_markup=keyboard)
