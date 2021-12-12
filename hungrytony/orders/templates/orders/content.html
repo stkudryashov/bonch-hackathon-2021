@@ -58,6 +58,18 @@
 </div>
 
 </form>
+<div class="container">
+        {% if order_cost %}
+                <form method="post" action="/payment/">
+                    {% csrf_token %}
+                    <input type="text" name="order_id" value="{{ secret_uuid }}" hidden>
+                    <input type="text" name="info" value="Оплата заказа" hidden>
+                    <input type="text" name="cost" value="{{ order_cost }}" hidden>
+                    <button class="nav__link" type="submit">Оплатить ({{ order_cost }} руб.)</button>
+                    <a class="nav__link" href="">Корзина</a>
+                </form>
+                {% endif %}
+</div>
 
 <style>
     .preview{
