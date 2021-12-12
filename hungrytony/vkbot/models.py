@@ -7,7 +7,7 @@ from restaurant.models import TableInfo
 
 class TableVk(models.Model):
     table = models.OneToOneField(TableInfo, on_delete=models.CASCADE, verbose_name="столик", null=False)
-    vk_photo_id = models.TextField(verbose_name='id фотографии', blank=True, null=True)
+    vk_photo_id = models.TextField(verbose_name='id фотографии', blank=False, null=False, default="209490298_457239093")
 
     def __str__(self):
         return str(self.table)
@@ -19,7 +19,7 @@ class TableVk(models.Model):
 
 class ProductVk(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, verbose_name="продукт", null=False)
-    vk_photo_id = models.TextField(verbose_name="id фотографии", blank=True, null=True)
+    vk_photo_id = models.TextField(verbose_name="id фотографии", blank=False, null=False, default="209490298_457239093")
 
     def __str__(self):
         return str(self.product)

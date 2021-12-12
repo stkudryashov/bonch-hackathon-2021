@@ -1,18 +1,21 @@
 import uuid
 
+from django.db.models import Sum
 from vk_api.bot_longpoll import VkBotEventType, VkBotEvent
+from yookassa import Configuration, Payment
 
 import vkbot.management.bot_keyboards as keys
 import vkbot.management.texts as text
 import vkbot.management.bot_commands as cmd
 from orders.models import Order, ProductCategory
+from payments.models import Payment as ModelPayment
 
 from vkbot.management.bot_settings import vk
 from vkbot.management.bot_settings import longpoll
 
 import json
 
-from restaurant.models import Table, TableInfo
+from restaurant.models import Table, TableInfo, Settings
 from vkbot.models import *
 
 
@@ -83,11 +86,9 @@ def resolve_commands(event):
     if payload:
         payload = json.loads(payload)
         command = payload.get("command")
-    else:
-        command = msg_text.lower()
 
     # Possible commands
-    if command == cmd.MENU:
+    if command == cmd.MENU or msg_text == cmd.MENU or msg_text == "начать":
         main_menu(user_id)
     elif command == cmd.ORDER:
         order_start(user_id, 0)
@@ -95,6 +96,16 @@ def resolve_commands(event):
         book(user_id)
     elif command == cmd.CHOOSE_TABLE:
         order_start(user_id, payload.get("table_id"))
+
+    elif command == cmd.CLEAR:
+        clear_user(user_id)
+
+    elif command == cmd.FINISH:
+        checkout(user_id)
+
+    elif command == cmd.CHECK_ORDER:
+        check_order(user_id)
+
     else:
         print(command)
 
@@ -106,6 +117,69 @@ def main_menu(user_id: int):
         keyboard=keys.keyboard_main_menu().get_keyboard(),
         random_id=0
     )
+
+
+def clear_user(user_id: int):
+    client = ClientVK.objects.filter(user_id=user_id).first()
+    if client:
+        client.delete()
+        main_menu(user_id)
+    else:
+        notify(user_id, text.ERROR_NO_USER_FOUND)
+        main_menu(user_id)
+
+
+def get_payment_url(order_id):
+    order = Order.objects.filter(order_id=order_id).first()
+
+    if order is None:
+        return None
+
+    table_id = order.table_id
+
+    cost = order.products.all().aggregate(sum=Sum('cost')).get('sum')
+    info = text.PAYMENT_TEXT % order_id
+
+    settings = Settings.objects.last()
+
+    Configuration.account_id = settings.account_id
+    Configuration.secret_key = settings.secret_key
+
+    payment = Payment.create(
+        {
+            'amount': {
+                'value': '{}'.format(round(cost, 2)),
+                'currency': 'RUB'
+            },
+            'confirmation': {
+                'type': 'redirect',
+                'return_url': 'https://vk.com/public209490298/'
+            },
+            'capture': True,
+            'description': info
+        }
+    )
+
+    ModelPayment.objects.create(
+        order_id=order_id,
+        table_id=table_id,
+        payment_id=payment.id,
+        status=payment.status,
+        info=info,
+        cost=float(cost)
+    )
+
+    return payment.confirmation.confirmation_url
+
+
+# do later
+def checkout(user_id: int):
+    pass
+
+
+# do later
+def check_order(user_id: int):
+    pass
 
 
 def notify(user_id: int, notify_text: str):
@@ -160,12 +234,10 @@ def order_end(user_id: int):
     )
 
 
+# do later
 def refresh_order(user_id: int):
-    client = ClientVK.objects.filter(user_id = user_id).first()
-
-    #TODO: Сделать кнопочки с возможностью отмены.
+    client = ClientVK.objects.filter(user_id=user_id).first()
     pass
-
 
 
 def order_make(user_id: int):
@@ -193,7 +265,7 @@ def book(user_id: int):
         for table_list in divide_list_by_value(tables, 10):
             vk.messages.send(
                 user_id=user_id,
-                message=text.KEYS_MAIN_BOOK_TABLE,
+                message=text.TEXT_BOOK_TABLE,
                 template=keys.carousel_tables(table_list),
                 random_id=0
             )
@@ -205,7 +277,7 @@ def book(user_id: int):
 def divide_list_by_value(some_list, value):
     res = []
     for i in range(0, (len(some_list) % value)):
-        _starting = i*value
+        _starting = i * value
         if _starting > len(some_list):
             break
 

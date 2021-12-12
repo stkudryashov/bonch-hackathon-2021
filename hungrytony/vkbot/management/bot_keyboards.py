@@ -14,14 +14,18 @@ def keyboard_main_menu() -> VkKeyboard:
 
     return keyboard
 
+def keyboard_payment(url:str) -> VkKeyboard:
+    keyboard = VkKeyboard(inline=True)
+    keyboard.add_openlink_button(text.KEYS_PAYMENT, url)
+    return keyboard
 
 def keyboard_order() -> VkKeyboard:
     keyboard = VkKeyboard()
-    keyboard.add_button(text.KEYS_CHECK_ORDER, colors.PRIMARY, payload={"command": ""})
+    keyboard.add_button(text.KEYS_CHECK_ORDER, colors.PRIMARY, payload={"command": command.CHECK_ORDER})
     keyboard.add_line()
-    keyboard.add_button(text.KEYS_FINISH, colors.POSITIVE, payload={"command": ""})
+    keyboard.add_button(text.KEYS_FINISH, colors.POSITIVE, payload={"command": command.FINISH})
     keyboard.add_line()
-    keyboard.add_button(text.KEYS_CANCEL, colors.NEGATIVE, payload={"command": ""})
+    keyboard.add_button(text.KEYS_CANCEL, colors.NEGATIVE, payload={"command": command.CLEAR})
 
     return keyboard
 
