@@ -41,8 +41,6 @@ def create_payment(request):
         }
     )
 
-    message = 'Для начала надо оплатить 🙂\n'
-
     ModelPayment.objects.create(
         order_id=order_id,
         table_id=table_id,
