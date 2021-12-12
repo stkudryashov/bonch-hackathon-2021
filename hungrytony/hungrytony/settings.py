@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'restaurant.apps.RestaurantConfig',
     'orders.apps.OrdersConfig',
     'payments.apps.PaymentsConfig',
-    'vkbot.apps.VkbotConfig'
+    'vkbot.apps.VkbotConfig',
+    'telegrambot.apps.TelegrambotConfig'
 ]
 
 MIDDLEWARE = [
