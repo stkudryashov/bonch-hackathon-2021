@@ -1,34 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!-- Table List -->
-    <div class="content">
-    {% for table in tables %}
-        <article class="card">
-            <div class="card__header">
-                <img class="card__photo" src="{{ table.tableinfo.photo.url }}" alt="">
-            </div>
-            <div class="card__content">
-                <div class="card__title">
-                    <h1>{{ table.tableinfo.name }} №{{ table.number }}</h1>
-                </div>
-                <div class="card__text">
-                    <p>{{ table.tableinfo.info }}</p>
-                </div>
+
+<form method="post" action="/reserve/">
+ {% csrf_token %}
+
+    <div class = "row gap-1">
+
+     {% for table in tables %}
+        <div class="card p-0" style="width: 18rem;">
+          <img src="{{ table.tableinfo.photo.url }}" class="card-img-top preview" alt="">
+
+          <div class="card-body">
+            <h5 class="card-title fw-bold">{{ table.tableinfo.name }} №{{ table.number }}</h5>
+            <p class="card-text overflow-auto">{{ table.tableinfo.info }}</p>
+          </div>
+            <div class="card-footer">
                 {% if table.is_free %}
-                <form method="post" action="/reserve/">
-                    {% csrf_token %}
-                    <div class="card__button">
-                        <button type="submit" value="{{ table.id }}" name="table_id">Забронировать</button>
-                    </div>
-                </form>
-                {% else %}
-                <div class="card__button">
-                    <a href="">Занят</a>
-                </div>
-                {% endif %}
+              <button class="btn btn-success w-100 align-self-end" type="submit" value="{{ table.id }}" name="table_id">Забронировать</button>
+              {% else %}
+              <button class="btn btn-danger w-100 align-self-end" disabled>Занят</button>
+              {% endif %}
             </div>
-        </article>
+
+        </div>
     {% endfor %}
+
     </div>
+</form>
+
+
+<style>
+    .preview{
+       width: 100%;
+       height: 200px;
+    }
+
+    .card-text{
+        max-height: 150px;
+    }
+
+    .btn-success{
+    background-color: #abb194 !important;
+    border-color: #abb194 !important;
+    }
+</style>
+
 {% endblock %}

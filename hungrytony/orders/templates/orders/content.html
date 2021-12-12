@@ -1,31 +1,85 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!-- Table List -->
+
+<form method="post" action="/order/add/{{ secret_uuid }}/">
+ {% csrf_token %}
+<div class="accordion" id="accordionPanelsStayOpenExample">
+
     {% for category in categories %}
-    <div>{{ category.name }}</div>
-    <div class="content">
-        {% for product in category.products.all %}
-            <article class="card">
-                <div class="card__header">
-                    <img class="card__photo" src="{{ product.photo.url }}" alt="">
-                </div>
-                <div class="card__content">
-                    <div class="card__title">
-                        <h1>{{ product.name }}</h1>
-                    </div>
-                    <div class="card__text">
-                        <p>{{ product.info }}</p>
-                    </div>
-                    <form method="post" action="/order/add/{{ secret_uuid }}/">
-                        {% csrf_token %}
-                        <div class="card__button">
-                            <button type="submit" value="{{ product.id }}" name="product_id">В корзину</button>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-heading{{category.id}}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{category.id}}" aria-expanded="true" aria-controls="panelsStayOpen-collapse{{category.id}}">
+           {{ category.name }}
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapse{{category.id}}" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading{{category.id}}">
+
+            <div class = "row gap-1">
+
+             {% for product in category.products.all %}
+                <div class="card p-0" style="width: 18rem;">
+                  <img src="{{ product.photo.url }}" class="card-img-top preview" alt="">
+
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                    <p class="card-text overflow-auto">{{ product.info }}</p>
+                  </div>
+                    <div class="card-footer">
+
+                      <button class="btn btn-success w-100 align-self-end" type="submit" value="{{ product.id }}" name="product_id">Добавить</button>
+
+                        <div class="input-group" id="input-group-{{product.id}}">
+
+                          <div class="input-group-prepend">
+                            <button class="btn btn-success px-3" type="button">+</button>
+                          </div>
+
+                          <input last="1" type="text" class="form-control text-center" placeholder="" aria-label="" onchange="validate(this, {{product.id}})">
+
+                            <div class="input-group-append">
+                                <button class="btn btn-danger px-3" type="button">-</button>
+                            </div>
+
                         </div>
-                    </form>
+
+
+
+                    </div>
+
                 </div>
-            </article>
-        {% endfor %}
+            {% endfor %}
+
+            </div>
+        </div>
     </div>
     {% endfor %}
+
+</div>
+
+</form>
+
+<style>
+    .preview{
+       width: 100%;
+       height: 200px;
+    }
+
+    .card-text{
+        max-height: 150px;
+    }
+
+    .btn-success{
+    background-color: #abb194 !important;
+    border-color: #abb194 !important;
+    }
+
+    .accordion-button{
+    background-color: #decfad !important;
+    color: #493423 !important;
+    }
+
+</style>
+
+
 {% endblock %}
